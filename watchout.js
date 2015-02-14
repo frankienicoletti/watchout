@@ -15,11 +15,12 @@ for (var x=0;x<enemyCount; x++) {
  */
 var svg = d3.select("body").append("svg").attr("width", w).attr("height", h);
 
-var drag = d3.behavior.drag()
-  .on("drag", function() {
-    d3.select(this).attr("cx",d3.event.x+d3.event.dx).attr("cy",d3.event.y+d3.event.dy);
-});
-svg.selectAll("circle")
+// hero follows mouse
+svg.on('mousemove', function() {
+  d3.select('.hero').attr('cx', d3.mouse(this)[0]).attr('cy', d3.mouse(this)[1])});
+
+// apply enemy class
+var enemies = svg.selectAll("circle")
   .data(enemySet)
   .enter()
   .append("circle")
@@ -28,42 +29,32 @@ svg.selectAll("circle")
 var hero = svg.selectAll("circle.hero").data([1]).enter().append("circle").attr('class','hero').attr("cx", w-100)
   .attr("cy", h-100)
   .attr("r", 20)
-  .style('fill', 'red').call(drag);
+  .style('fill', 'red');
 
-
-function update (data) {
-  var allEnemies = svg.selectAll('circle.enemy').data(data);
-
-  allEnemies.transition().ease("linear").delay(0).attr("cx", function(d, i) {
+function update (enemies) {
+  enemies.transition().duration(1500).ease("linear").attr("cx", function() {
     return (Math.floor(Math.random() * w) + 20);
   })
-    .attr("cy", function(d, i) {
+    .attr("cy", function() {
       return (Math.floor(Math.random() * h) + 20);
     })
     .attr("r", function(d) {
       return d;
+    }).each('end', function(){
+      update( d3.select(this));
     });
+
+  enemies.on('mouseover', function(){
+    d3.event.preventDefault();
+    alert("You Lose");
+  });
 
 }
 
-var allEnemies = svg.selectAll('circle.enemy').data(enemySet);
+update(enemies);
 
-update(enemySet);
-
-// Update position every second
-setInterval(function() {
-  update(enemySet);
-
-}, 1000);
-
-var dradius = radius;
-
-setInterval(function() {
-  if ((hero.attr('cx')-dradius <= allEnemies.attr('cx') && hero.attr('cx')+dradius >= allEnemies.attr('cx'))
-      && (hero.attr('cy')-dradius <= allEnemies.attr('cy') && hero.attr('cy')+dradius >= allEnemies.attr('cy'))) {
-    alert("You lose!");
-  }
-},1);
-
+//enemies.on('mouseover', function(){
+//  alert("You Lose");
+//});
 
 
