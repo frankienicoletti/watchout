@@ -11,30 +11,25 @@ for (var x=0;x<enemyCount; x++) {
   enemySet.push(enemyWidth);
 }
 
-
-
 /** Create SVG element
  */
 var svg = d3.select("body").append("svg").attr("width", w).attr("height", h);
 
+var drag = d3.behavior.drag()
+  .on("drag", function() {
+    d3.select(this).attr("cx",d3.event.x+d3.event.dx);
+    d3.select(this).attr("cy",d3.event.y+d3.event.dy);
+});
 svg.selectAll("circle")
   .data(enemySet)
   .enter()
   .append("circle")
   .attr("class", "enemy");
 
-drag.on("drag", function() {
-  d3.select(this).attr("cx", +d3.select(this).attr("cx") + d3.event.dx);
-  d3.select(this).attr("cy", +d3.select(this).attr("cy") + d3.event.dy);
-});
-
-//var character = circle.selectAll()
 var hero = svg.selectAll("circle.hero").data([1]).enter().append("circle").attr('class','hero').attr("cx", 250)
   .attr("cy", 250)
-  .attr("r", 5)
-  //.attr("dragable", true)
-  .style('fill', 'red')
-  .call(drag());
+  .attr("r", 10)
+  .style('fill', 'red').call(drag);
 
 
 function update (data) {
