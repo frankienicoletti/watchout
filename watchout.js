@@ -20,12 +20,25 @@ var svg = d3.select("body").append("svg").attr("width", w).attr("height", h);
 svg.selectAll("circle")
   .data(enemySet)
   .enter()
-  .append("circle").attr("class", "enemy");
+  .append("circle")
+  .attr("class", "enemy");
+
+drag.on("drag", function() {
+  d3.select(this).attr("cx", +d3.select(this).attr("cx") + d3.event.dx);
+  d3.select(this).attr("cy", +d3.select(this).attr("cy") + d3.event.dy);
+});
 
 //var character = circle.selectAll()
+var hero = svg.selectAll("circle.hero").data([1]).enter().append("circle").attr('class','hero').attr("cx", 250)
+  .attr("cy", 250)
+  .attr("r", 5)
+  //.attr("dragable", true)
+  .style('fill', 'red')
+  .call(drag());
+
 
 function update (data) {
-  var allEnemies = d3.select('circle').selectAll("enemy").data(data);
+  var allEnemies = svg.selectAll('circle.enemy').data(data);
 
   allEnemies.attr("cx", function(d, i) {
     return (Math.floor(Math.random() * 200) + 25);
@@ -41,7 +54,12 @@ function update (data) {
 
 update(enemySet);
 
-// Grab a random sample of letters from the alphabet, in alphabetical order.
+// Update position every second
 setInterval(function() {
   update(enemySet);
 }, 1000);
+
+
+
+
+
