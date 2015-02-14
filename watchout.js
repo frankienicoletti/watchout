@@ -2,13 +2,13 @@
 var w = 1500;
 var h = 750;
 var enemySet = [];
-var enemyCount = 10;
-var enemyWidth = 20;
+var enemyCount = 5;
+var radius = 20;
 
 /** Initialize enemySet
  */
 for (var x=0;x<enemyCount; x++) {
-  enemySet.push(enemyWidth);
+  enemySet.push(radius);
 }
 
 /** Create SVG element
@@ -25,8 +25,8 @@ svg.selectAll("circle")
   .append("circle")
   .attr("class", "enemy");
 
-var hero = svg.selectAll("circle.hero").data([1]).enter().append("circle").attr('class','hero').attr("cx", w-20)
-  .attr("cy", h-20)
+var hero = svg.selectAll("circle.hero").data([1]).enter().append("circle").attr('class','hero').attr("cx", w-100)
+  .attr("cy", h-100)
   .attr("r", 20)
   .style('fill', 'red').call(drag);
 
@@ -34,7 +34,7 @@ var hero = svg.selectAll("circle.hero").data([1]).enter().append("circle").attr(
 function update (data) {
   var allEnemies = svg.selectAll('circle.enemy').data(data);
 
-  allEnemies.transition().attr("cx", function(d, i) {
+  allEnemies.transition().ease("linear").delay(0).attr("cx", function(d, i) {
     return (Math.floor(Math.random() * w) + 20);
   })
     .attr("cy", function(d, i) {
@@ -46,14 +46,24 @@ function update (data) {
 
 }
 
+var allEnemies = svg.selectAll('circle.enemy').data(enemySet);
+
 update(enemySet);
 
 // Update position every second
 setInterval(function() {
   update(enemySet);
+
 }, 1000);
 
+var dradius = radius;
 
+setInterval(function() {
+  if ((hero.attr('cx')-dradius <= allEnemies.attr('cx') && hero.attr('cx')+dradius >= allEnemies.attr('cx'))
+      && (hero.attr('cy')-dradius <= allEnemies.attr('cy') && hero.attr('cy')+dradius >= allEnemies.attr('cy'))) {
+    alert("You lose!");
+  }
+},1);
 
 
 
