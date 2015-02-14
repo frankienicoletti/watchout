@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 var w = 500;
@@ -48,3 +49,7 @@ function shuffle(array) {
   }
   return array;
 }
+=======
+// start slingin' some d3 here.
+
+>>>>>>> 0de9b77078b421ed3f7ec6c8fe0a0d1197aeab18
