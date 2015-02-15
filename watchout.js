@@ -1,14 +1,15 @@
-
+// initialize variables
 var w = 1200;
 var h = 550;
 var enemySet = [];
-var enemyCount = 5;
+var enemyCount = 20;
 var radius = 20;
 var currentScore = 0;
 var highScore = 0;
 var collisionCount = 0;
 var mouse = {x: 500, y: 500};
 
+// attach scores to html
 var score = function () {
   d3.select(".current span").text(currentScore);
   d3.select(".high span").text(highScore);
@@ -40,10 +41,6 @@ var enemies = svg.selectAll("circle")
   .attr("class", "enemy")
   .attr("cx", 200)
   .attr("cy", 200);
-  //.attr("xlink:href", "ninjanic.png")
-  //.style('fill', 'url(ninjanic.png)');
-
-//svg.selectAll('circle').append("image").attr("xlink:href", "ninjanic.png").attr("width", 20).attr("r", 20);
 
 
 var hero = svg.selectAll("circle.hero").data([1]).enter().append("circle").attr('class','hero').attr("cx", w-100)
@@ -104,8 +101,8 @@ var scoreUpdate = function () {
   score();
 };
 
+// intervals for score updates & collision detection
 setInterval(scoreUpdate, 200);
-
 d3.timer(collisionDetection);
 
 
