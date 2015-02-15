@@ -1,5 +1,22 @@
 /* your beautiful css styling goes here! */
+body {
+    font-family: sans-serif;
+    font-weight: 300;
+    font-size: larger;
+    background-color: aliceblue;
+}
 
+.enemy {
+    background-image: url("ninjanic.png");
+}
+
+.hero {
+
+}
+
+.collisions {
+    color: red;
+}
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
 
